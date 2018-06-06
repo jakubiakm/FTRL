@@ -2,9 +2,10 @@ from ftrl import FTRL
 from csv import DictReader
 from datetime import datetime
 from math import log
+import argparse
 
-def main():
-    model = FTRL(0.005, 1, 0, 1)
+def main(args):
+    model = FTRL(args.alpha, args.beta, args.L1, args.L2)
     train(model)
     test(model)
 
@@ -58,4 +59,11 @@ def logloss(p, y):
     return -log(p) if y == 1. else -log(1. - p)
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='FTRL')
+    parser.add_argument('--alpha', type=float, required=True, default=0.005)
+    parser.add_argument('--beta', type=float, required=True, default=1)
+    parser.add_argument('--L1', type=float, required=True, default=0)
+    parser.add_argument('--L2', type=float, required=True, default=1)
+   
+    args = parser.parse_args()
+    main(args)
